@@ -1,5 +1,6 @@
 package com.example.news.controllers;
 
+import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.news.dao.CommentDAO;
 import com.example.news.dao.NewsDAO;
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
@@ -33,6 +35,8 @@ public class NewsController {
 
     @Autowired
     private NewsDAO newsDao;
+
+    @Autowired private CommentDAO commentDao;
     
     @GetMapping("")
     public List<News> getAllNews() {
@@ -53,14 +57,18 @@ public class NewsController {
 
 
     // @GetMapping("/{id}/comments")
-    // public List<Comment> GetComments(@PathVariable News id) {
-    //     Optional<News> tempNews = this.newsInterface.findById(id);
-    //     List<Comment> foundCommentList = new ArrayList<Comment>();
-    //     foundCommentList = commentInterface.findById(News.getOwnedByNewID);
+    // public List<Comment> GetComments(@PathVariable Integer id) {
+    //     Optional<News> referredNews = this.newsDao.getOneNew(id);
+    //     List<Comment> emptyCommentList = new ArrayList<Comment>();
 
-    //     return foundCommentList;
+    //     if (!referredNews.isEmpty()) {
+    //         return this.commentDao.getCommentsByNewsId(id);
+    //     } else {
+    //         return emptyCommentList;
+    //     }
     // }
-
+    
+        
     // @PostMapping("/{id}/comments/post-comment")
     // public Comment commentPost(@RequestBody Comment body) {
     //     Comment writtenComment = new Comment();

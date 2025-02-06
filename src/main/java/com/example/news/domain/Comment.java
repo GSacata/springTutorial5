@@ -78,4 +78,7 @@ public class Comment {
         return ownedByNewID;
     }
 
+    public void setOwnedByNewID(News ownedByNewID) {
+        this.ownedByNewID = ownedByNewID;
+    }
 }
