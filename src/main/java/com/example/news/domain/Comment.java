@@ -1,13 +1,17 @@
 package com.example.news.domain;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +25,10 @@ public class Comment {
 
     @Column(columnDefinition = "VARCHAR(600)")
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="owned_by_new_id")
+    private News ownedByNewID;
 
     private Instant publicationMoment;
 
@@ -64,6 +72,10 @@ public class Comment {
 
     public void setPublicationMoment(Instant publicationMoment) {
         this.publicationMoment = publicationMoment;
+    }
+
+    public News getOwnedByNewID() {
+        return ownedByNewID;
     }
 
 }

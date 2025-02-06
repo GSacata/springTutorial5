@@ -1,12 +1,15 @@
 package com.example.news.domain;
 
 import java.time.Instant;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +24,9 @@ public class News {
     
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @OneToMany(mappedBy = "ownedByNewID", cascade = CascadeType.ALL)
+    private List<Comment> postedComments;
     
     private Instant publicationMoment;
     
@@ -72,6 +78,14 @@ public class News {
 
     public void setPublicationMoment(Instant publicationMoment) {
         this.publicationMoment = publicationMoment;
+    }
+
+    public List<Comment> getPostedComments() {
+        return postedComments;
+    }
+
+    public void setPostedComments(List<Comment> postedComments) {
+        this.postedComments = postedComments;
     }
 
 }
