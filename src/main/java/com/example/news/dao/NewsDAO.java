@@ -34,4 +34,22 @@ public class NewsDAO {
         this.newsInterface.save(writtenNews);
         return writtenNews;
     }
+
+    public News editNews(Integer id, News body) throws Exception {
+        News writtenNews = this.getOneNew(id).orElseThrow(() -> new Exception("Resource not found"));
+        writtenNews.setAuthor(body.getAuthor());
+        writtenNews.setContent(body.getContent());
+        writtenNews.setHeadline(body.getHeadline());
+        writtenNews.setPublicationMoment(Utils.returnFormattedNow());
+
+        this.newsInterface.save(writtenNews);
+        return writtenNews;
+    }
+
+    public void deleteNews(Integer id) {
+        Optional<News> newsRef = this.newsInterface.findById(id);
+        if (!newsRef.isEmpty()) {
+            this.newsInterface.delete(newsRef.get());
+        }
+    }
 }

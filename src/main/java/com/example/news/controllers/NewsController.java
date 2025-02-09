@@ -2,13 +2,17 @@ package com.example.news.controllers;
 
 import java.lang.StackWalker.Option;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,20 +57,29 @@ public class NewsController {
         return this.newsDao.saveNews(body);
     }
 
+    @PutMapping("/{id}/edit")
+    public News EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
+        return this.newsDao.editNews(id, body);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public void deleteNews(Integer id) {
+        this.newsDao.deleteNews(id);
+    }
+
     // Postagem de comentários, preciso aprender a estender endpoints em classes diferentes... Se é que tem como.
 
 
-    // @GetMapping("/{id}/comments")
-    // public List<Comment> GetComments(@PathVariable Integer id) {
-    //     Optional<News> referredNews = this.newsDao.getOneNew(id);
-    //     List<Comment> emptyCommentList = new ArrayList<Comment>();
-
-    //     if (!referredNews.isEmpty()) {
-    //         return this.commentDao.getCommentsByNewsId(id);
-    //     } else {
-    //         return emptyCommentList;
-    //     }
-    // }
+    @GetMapping("/{id}/comments")
+    public List<Comment> GetComments(@PathVariable Integer id) {
+        News referredNews = this.newsDao.getOneNew(id).get();
+        
+        if (Objects.nonNull(referredNews)) {
+            return referredNews.getPostedComments();
+        } else {
+            return new ArrayList<>();
+        }
+    }
     
         
     // @PostMapping("/{id}/comments/post-comment")
