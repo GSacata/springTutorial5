@@ -1,15 +1,14 @@
 package com.example.news.controllers;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,21 +20,12 @@ import com.example.news.dao.CommentDAO;
 import com.example.news.dao.NewsDAO;
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
-import com.example.news.interfaces.CommentInterface;
-import com.example.news.interfaces.NewsInterface;
-import com.example.news.utils.Utils;
 
 @RestController
 @RequestMapping("/news")
 public class NewsController {
     
     List<Comment> tempCommentList = new ArrayList<Comment>();
-    
-    @Autowired
-    private NewsInterface newsInterface;
-    
-    @Autowired
-    private CommentInterface commentInterface;
 
     @Autowired
     private NewsDAO newsDao;
@@ -67,32 +57,31 @@ public class NewsController {
         this.newsDao.deleteNews(id);
     }
 
-    // Postagem de comentários, preciso aprender a estender endpoints em classes diferentes... Se é que tem como.
-
+    // Postagem de comentários
 
     @GetMapping("/{id}/comments")
-    public List<Comment> GetComments(@PathVariable Integer id) {
-        News referredNews = this.newsDao.getOneNew(id).get();
-        
-        if (Objects.nonNull(referredNews)) {
-            return referredNews.getPostedComments();
-        } else {
-            return new ArrayList<>();
-        }
+    public List<Comment> getAllComments(@PathVariable Integer id) {
+        return this.commentDao.getAllComments(id);
+    }
+
+    @GetMapping("/{id}/comments/{commentUUID}")
+    public Comment getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
+        return this.commentDao.getOneComment(id, commentUUID);
     }
     
-        
-    // @PostMapping("/{id}/comments/post-comment")
-    // public Comment commentPost(@RequestBody Comment body) {
-    //     Comment writtenComment = new Comment();
-        
-    //     writtenComment.setAuthor(body.getAuthor());
-    //     writtenComment.setContent(body.getContent());
-    //     // writtenComment.setId(UUID.randomUUID());
-    //     writtenComment.setPublicationMoment(Utils.returnFormattedNow());
+    @PostMapping("/{id}/comments/post-comment")
+    public Comment commentPost(@PathVariable Integer id, @RequestBody Comment body) {
+        return this.commentDao.saveNewComment(id, body);
+    }
 
-    //     this.commentInterface.save(writtenComment);
+    @PatchMapping("/{id}/comments/{commentUUID}/edit")
+    public Comment editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
+        return this.commentDao.editComment(id, commentUUID, body);
+    }
 
-    //     return writtenComment;
-    // }
+    @DeleteMapping("/{id}/comments/{uuid}/delete")
+    public void deleteComment(@PathVariable Integer id, @PathVariable UUID uuid) {
+        this.commentDao.deleteComment(id, uuid);
+    }
+
 }

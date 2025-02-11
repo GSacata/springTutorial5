@@ -29,18 +29,18 @@ public class CommentController {
     @Autowired
     private NewsInterface newsInterface;
 
-    @GetMapping("")
-    public List<Comment> GetComments() {
-        return this.commentDao.getAllComments();
-    }
+    // @GetMapping("")
+    // public List<Comment> GetComments() {
+    //     return this.commentDao.getAllComments();
+    // }
 
-    @GetMapping("/{id}")
-    public Optional<Comment> getOneComment(@PathVariable UUID id) {
-        return this.commentDao.getOneComment(id);
-    }
+    // @GetMapping("/{id}")
+    // public Optional<Comment> getOneComment(@PathVariable UUID id) {
+    //     return this.commentDao.getOneComment(id);
+    // }
 
-    @PostMapping("/post-comment")
-    public Comment commentPost(@RequestBody Comment body) {
-        return this.commentDao.saveNewComment(body);
-    }
+    // @PostMapping("/post-comment")
+    // public Comment commentPost(@RequestBody Comment body) {
+    //     return this.commentDao.saveNewComment(body);
+    // }
 }

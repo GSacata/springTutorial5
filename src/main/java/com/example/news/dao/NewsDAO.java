@@ -11,8 +11,7 @@ import com.example.news.utils.Utils;
 
 public class NewsDAO {
     
-    @Autowired
-    public NewsInterface newsInterface;
+    @Autowired public NewsInterface newsInterface;
 
     News newsRef = new News();
 
