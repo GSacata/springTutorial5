@@ -35,13 +35,13 @@ public class NewsController {
     @Autowired private CommentDAO commentDao;
     
     @GetMapping("")
-    public List<News> getAllNews() {
-        return this.newsDao.getAllNews();
+    public List<NewsDTORelyOnCommentDTOMissingNewId> getAllNews() {
+        return this.newsDao.getAllNewsClean();
     }
 
     @GetMapping("/{id}")
-    public Optional<News> GetOneNew(@PathVariable Integer id) {
-        return this.newsDao.getOneNew(id);
+    public NewsDTORelyOnCommentDTOMissingNewId GetOneNew(@PathVariable Integer id) {
+        return this.newsDao.getOneNewClean(id);
     }
 
     @PostMapping("write")
