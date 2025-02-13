@@ -31,6 +31,8 @@ public class Comment {
 
     private Instant publicationMoment;
 
+    // TODO Implement lastUpdated;
+
 
     public Comment(UUID id, String author, String content, Instant publicationMoment) {
         this.id = id;

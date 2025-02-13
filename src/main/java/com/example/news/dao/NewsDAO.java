@@ -2,6 +2,7 @@ package com.example.news.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,6 @@ import com.example.news.utils.Utils;
 public class NewsDAO {
     
     @Autowired public NewsInterface newsInterface;
-
-    News newsRef = new News();
 
     public List<News> getAllNews() {
         return this.newsInterface.findAll();
@@ -59,7 +58,7 @@ public class NewsDAO {
     }
 
     public News saveNews(News body) {
-        News writtenNews = newsRef;
+        News writtenNews = new News();
         writtenNews.setAuthor(body.getAuthor());
         writtenNews.setContent(body.getContent());
         writtenNews.setHeadline(body.getHeadline());
@@ -69,11 +68,21 @@ public class NewsDAO {
         return writtenNews;
     }
 
-    public News editNews(Integer id, News body) throws Exception {
+    public News editNews(Integer id, News body) {
         News writtenNews = this.getOneNew(id);
-        writtenNews.setAuthor(body.getAuthor());
-        writtenNews.setContent(body.getContent());
-        writtenNews.setHeadline(body.getHeadline());
+
+        if (Objects.nonNull(body.getAuthor())) {
+            writtenNews.setAuthor(body.getAuthor());
+        }
+
+        if (Objects.nonNull(body.getContent())) {
+            writtenNews.setContent(body.getContent());
+        }
+
+        if (Objects.nonNull(body.getHeadline())) {
+            writtenNews.setHeadline(body.getHeadline());
+        }
+
         writtenNews.setPublicationMoment(Utils.returnFormattedNow());
 
         this.newsInterface.save(writtenNews);
@@ -81,9 +90,9 @@ public class NewsDAO {
     }
 
     public void deleteNews(Integer id) {
-        Optional<News> newsRef = this.newsInterface.findById(id);
-        if (!newsRef.isEmpty()) {
-            this.newsInterface.delete(newsRef.get());
+        News newsRef = this.newsInterface.findById(id).get();
+        if (Objects.nonNull(newsRef)) {
+            this.newsInterface.delete(newsRef);
         }
     }
 }

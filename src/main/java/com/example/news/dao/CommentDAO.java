@@ -17,12 +17,9 @@ public class CommentDAO {
 
     @Autowired private CommentInterface commentInterface;
     @Autowired private NewsDAO newsDao;
-
-    Comment commentRef = new Comment();
-    News newsRef = new News();
     
     public List<Comment> getAllComments(Integer id) {
-        News referredNews = this.newsDao.getOneNew(id).get();
+        News referredNews = this.newsDao.getOneNew(id);
         
         if (Objects.nonNull(referredNews)) {
             return referredNews.getPostedComments();
@@ -32,7 +29,7 @@ public class CommentDAO {
     }
 
     public List<CommentDTOMissingNewId> getAllCommentsRefined(Integer id) {
-        News referredNews = this.newsDao.getOneNew(id).get();
+        News referredNews = this.newsDao.getOneNew(id);
         CommentDTOMissingNewId DTOComment = new CommentDTOMissingNewId();
         List<CommentDTOMissingNewId> DTOCommentList = new ArrayList<CommentDTOMissingNewId>();
         
@@ -57,8 +54,8 @@ public class CommentDAO {
     }
 
     public Comment getOneComment(Integer id, UUID commentUUID) {
-        News referredNews = this.newsDao.getOneNew(id).get();
-        Comment referredComment = commentRef;
+        News referredNews = this.newsDao.getOneNew(id);
+        Comment referredComment = new Comment();
         
         if (Objects.nonNull(referredNews)) {
             return this.commentInterface.findById(commentUUID).get();
@@ -68,8 +65,8 @@ public class CommentDAO {
     }
 
     public CommentDTOMissingNewId getOneCommentRefined(Integer id, UUID commentUUID) {
-        News referredNews = this.newsDao.getOneNew(id).get();
-        Comment referredComment = commentRef;
+        News referredNews = this.newsDao.getOneNew(id);
+        Comment referredComment = new Comment();
         CommentDTOMissingNewId commentDTOOnlyNewId = new CommentDTOMissingNewId();
         
         if (Objects.nonNull(referredNews)) {
@@ -86,8 +83,8 @@ public class CommentDAO {
     }
 
     public Comment saveNewComment(Integer id, Comment body) {
-        News referredNews = this.newsDao.getOneNew(id).get();
-        Comment writtenComment = commentRef;
+        News referredNews = this.newsDao.getOneNew(id);
+        Comment writtenComment = new Comment();
 
         if (Objects.nonNull(referredNews)) {
             
@@ -105,13 +102,19 @@ public class CommentDAO {
     }
 
     public Comment editComment(Integer id, UUID commentUUID, Comment body) {
-        News referredNews = this.newsDao.getOneNew(id).get();
+        News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = this.commentInterface.findById(commentUUID).get();
 
         if (Objects.nonNull(referredNews) && Objects.nonNull(writtenComment)) {
             
-            writtenComment.setAuthor(body.getAuthor());
-            writtenComment.setContent(body.getContent());
+            if (Objects.nonNull(body.getAuthor())) {
+                writtenComment.setAuthor(body.getAuthor());
+            }
+
+            if (Objects.nonNull(body.getContent())) {
+                writtenComment.setContent(body.getContent());
+            }
+
             writtenComment.setPublicationMoment(Utils.returnFormattedNow());
             writtenComment.setOwnedByNewID(referredNews);
 
@@ -124,7 +127,7 @@ public class CommentDAO {
     }
 
     public void deleteComment(Integer id, UUID commentUUID) {
-        News referredNews = this.newsDao.getOneNew(id).get();
+        News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = this.commentInterface.findById(commentUUID).get();
 
         if (Objects.nonNull(referredNews) && Objects.nonNull(writtenComment)) {

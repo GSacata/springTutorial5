@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Table
 public class News {
     
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     private String headline;
@@ -29,6 +29,8 @@ public class News {
     private List<Comment> postedComments;
     
     private Instant publicationMoment;
+
+    // TODO implementar lastUpdated
     
     public News(Integer id, String headline, String author, String content, Instant publicationMoment) {
         this.id = id;

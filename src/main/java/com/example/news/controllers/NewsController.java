@@ -49,13 +49,13 @@ public class NewsController {
         return this.newsDao.saveNews(body);
     }
 
-    @PutMapping("/{id}/edit")
+    @PatchMapping("/{id}/edit")
     public News EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
         return this.newsDao.editNews(id, body);
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteNews(Integer id) {
+    public void deleteNews(@PathVariable Integer id) {
         this.newsDao.deleteNews(id);
     }
 
