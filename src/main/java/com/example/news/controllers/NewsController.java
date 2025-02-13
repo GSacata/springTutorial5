@@ -20,6 +20,8 @@ import com.example.news.dao.CommentDAO;
 import com.example.news.dao.NewsDAO;
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
+import com.example.news.dto.CommentDTOMissingNewId;
+import com.example.news.dto.NewsDTORelyOnCommentDTOMissingNewId;
 
 @RestController
 @RequestMapping("/news")
@@ -60,13 +62,13 @@ public class NewsController {
     // Postagem de comentários
 
     @GetMapping("/{id}/comments")
-    public List<Comment> getAllComments(@PathVariable Integer id) {
-        return this.commentDao.getAllComments(id);
+    public List<CommentDTOMissingNewId> getAllComments(@PathVariable Integer id) {
+        return this.commentDao.getAllCommentsRefined(id);
     }
 
     @GetMapping("/{id}/comments/{commentUUID}")
-    public Comment getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
-        return this.commentDao.getOneComment(id, commentUUID);
+    public CommentDTOMissingNewId getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
+        return this.commentDao.getOneCommentRefined(id, commentUUID);
     }
     
     @PostMapping("/{id}/comments/post-comment")

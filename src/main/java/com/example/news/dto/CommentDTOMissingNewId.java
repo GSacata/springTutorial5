@@ -1,45 +1,22 @@
-package com.example.news.domain;
+package com.example.news.dto;
 
 import java.time.Instant;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
-@Entity
-@Table
-public class Comment {
-
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+public class CommentDTOMissingNewId {
     private UUID id;
-
     private String author;
-
-    @Column(columnDefinition = "VARCHAR(600)")
     private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="owned_by_new_id")
-    private News ownedByNewID;
-
     private Instant publicationMoment;
-
-
-    public Comment(UUID id, String author, String content, Instant publicationMoment) {
+    
+    public CommentDTOMissingNewId(UUID id, String author, String content, Instant publicationMoment) {
         this.id = id;
         this.author = author;
         this.content = content;
         this.publicationMoment = publicationMoment;
     }
 
-    public Comment() {}
+    public CommentDTOMissingNewId() {}
 
     public UUID getId() {
         return id;
@@ -71,13 +48,5 @@ public class Comment {
 
     public void setPublicationMoment(Instant publicationMoment) {
         this.publicationMoment = publicationMoment;
-    }
-
-    public News getOwnedByNewID() {
-        return ownedByNewID;
-    }
-
-    public void setOwnedByNewID(News ownedByNewID) {
-        this.ownedByNewID = ownedByNewID;
     }
 }

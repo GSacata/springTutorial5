@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
+import com.example.news.dto.CommentDTOMissingNewId;
 import com.example.news.interfaces.CommentInterface;
 import com.example.news.utils.Utils;
 
@@ -30,6 +31,31 @@ public class CommentDAO {
         }
     }
 
+    public List<CommentDTOMissingNewId> getAllCommentsRefined(Integer id) {
+        News referredNews = this.newsDao.getOneNew(id).get();
+        CommentDTOMissingNewId DTOComment = new CommentDTOMissingNewId();
+        List<CommentDTOMissingNewId> DTOCommentList = new ArrayList<CommentDTOMissingNewId>();
+        
+        if (Objects.nonNull(referredNews)) {
+            List<Comment> commentList = new ArrayList<Comment>();
+            commentList = referredNews.getPostedComments();
+
+            for (Comment comment : commentList) {
+                DTOComment.setAuthor(comment.getAuthor());
+                DTOComment.setContent(comment.getContent());
+                DTOComment.setId(comment.getId());
+                DTOComment.setPublicationMoment(comment.getPublicationMoment());
+                DTOCommentList.add(DTOComment);
+
+                DTOComment = new CommentDTOMissingNewId();
+            }
+
+            return DTOCommentList;
+        } else {
+            return DTOCommentList;
+        }
+    }
+
     public Comment getOneComment(Integer id, UUID commentUUID) {
         News referredNews = this.newsDao.getOneNew(id).get();
         Comment referredComment = commentRef;
@@ -38,6 +64,24 @@ public class CommentDAO {
             return this.commentInterface.findById(commentUUID).get();
         } else {
             return referredComment;
+        }
+    }
+
+    public CommentDTOMissingNewId getOneCommentRefined(Integer id, UUID commentUUID) {
+        News referredNews = this.newsDao.getOneNew(id).get();
+        Comment referredComment = commentRef;
+        CommentDTOMissingNewId commentDTOOnlyNewId = new CommentDTOMissingNewId();
+        
+        if (Objects.nonNull(referredNews)) {
+            referredComment = this.commentInterface.findById(commentUUID).get();
+            commentDTOOnlyNewId.setAuthor(referredComment.getAuthor());
+            commentDTOOnlyNewId.setContent(referredComment.getContent());
+            commentDTOOnlyNewId.setId(referredComment.getId());
+            commentDTOOnlyNewId.setPublicationMoment(referredComment.getPublicationMoment());
+
+            return commentDTOOnlyNewId;
+        } else {
+            return commentDTOOnlyNewId;
         }
     }
 
