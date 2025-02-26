@@ -3,15 +3,15 @@ package com.example.news.dto;
 import java.time.Instant;
 import java.util.List;
 
-public class NewsDTORelyOnCommentDTOMissingNewId {
+public class NewsDTONoComments {
     private Integer id;
     private String headline;
     private String author;
     private String content;
-    private List<CommentDTOMissingNewId> postedComments;
+    private List<CommentDTONoNews> postedComments;
     private Instant publicationMoment;
     
-    public NewsDTORelyOnCommentDTOMissingNewId(Integer id, String headline, String author, String content, List<CommentDTOMissingNewId> postedComments,
+    public NewsDTONoComments(Integer id, String headline, String author, String content, List<CommentDTONoNews> postedComments,
             Instant publicationMoment) {
         this.id = id;
         this.headline = headline;
@@ -21,7 +21,7 @@ public class NewsDTORelyOnCommentDTOMissingNewId {
         this.publicationMoment = publicationMoment;
     }
 
-    public NewsDTORelyOnCommentDTOMissingNewId() {}
+    public NewsDTONoComments() {}
 
     public Integer getId() {
         return id;
@@ -55,11 +55,11 @@ public class NewsDTORelyOnCommentDTOMissingNewId {
         this.content = content;
     }
 
-    public List<CommentDTOMissingNewId> getPostedComments() {
+    public List<CommentDTONoNews> getPostedComments() {
         return postedComments;
     }
 
-    public void setPostedComments(List<CommentDTOMissingNewId> postedComments) {
+    public void setPostedComments(List<CommentDTONoNews> postedComments) {
         this.postedComments = postedComments;
     }
 

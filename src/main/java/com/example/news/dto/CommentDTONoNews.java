@@ -3,20 +3,20 @@ package com.example.news.dto;
 import java.time.Instant;
 import java.util.UUID;
 
-public class CommentDTOMissingNewId {
+public class CommentDTONoNews {
     private UUID id;
     private String author;
     private String content;
     private Instant publicationMoment;
     
-    public CommentDTOMissingNewId(UUID id, String author, String content, Instant publicationMoment) {
+    public CommentDTONoNews(UUID id, String author, String content, Instant publicationMoment) {
         this.id = id;
         this.author = author;
         this.content = content;
         this.publicationMoment = publicationMoment;
     }
 
-    public CommentDTOMissingNewId() {}
+    public CommentDTONoNews() {}
 
     public UUID getId() {
         return id;

@@ -19,8 +19,8 @@ import com.example.news.dao.CommentDAO;
 import com.example.news.dao.NewsDAO;
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
-import com.example.news.dto.CommentDTOMissingNewId;
-import com.example.news.dto.NewsDTORelyOnCommentDTOMissingNewId;
+import com.example.news.dto.CommentDTONoNews;
+import com.example.news.dto.NewsDTONoComments;
 
 @RestController
 @RequestMapping("/news")
@@ -34,22 +34,22 @@ public class NewsController {
     @Autowired private CommentDAO commentDao;
     
     @GetMapping("")
-    public List<NewsDTORelyOnCommentDTOMissingNewId> getAllNews() {
+    public List<NewsDTONoComments> getAllNews() {
         return this.newsDao.getAllNewsClean();
     }
 
     @GetMapping("/{id}")
-    public NewsDTORelyOnCommentDTOMissingNewId GetOneNew(@PathVariable Integer id) {
+    public NewsDTONoComments GetOneNew(@PathVariable Integer id) {
         return this.newsDao.getOneNewClean(id);
     }
 
     @PostMapping("write")
-    public NewsDTORelyOnCommentDTOMissingNewId newsPost(@RequestBody News body) {
+    public NewsDTONoComments newsPost(@RequestBody News body) {
         return this.newsDao.saveNews(body);
     }
 
     @PatchMapping("/{id}/edit")
-    public NewsDTORelyOnCommentDTOMissingNewId EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
+    public NewsDTONoComments EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
         return this.newsDao.editNews(id, body);
     }
 
@@ -61,22 +61,22 @@ public class NewsController {
     // Postagem de comentários
 
     @GetMapping("/{id}/comments")
-    public List<CommentDTOMissingNewId> getAllComments(@PathVariable Integer id) {
+    public List<CommentDTONoNews> getAllComments(@PathVariable Integer id) {
         return this.commentDao.getAllCommentsRefined(id);
     }
 
     @GetMapping("/{id}/comments/{commentUUID}")
-    public CommentDTOMissingNewId getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
+    public CommentDTONoNews getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
         return this.commentDao.getOneCommentRefined(id, commentUUID);
     }
     
     @PostMapping("/{id}/comments/post-comment")
-    public CommentDTOMissingNewId commentPost(@PathVariable Integer id, @RequestBody Comment body) {
+    public CommentDTONoNews commentPost(@PathVariable Integer id, @RequestBody Comment body) {
         return this.commentDao.saveNewComment(id, body);
     }
 
     @PatchMapping("/{id}/comments/{commentUUID}/edit")
-    public CommentDTOMissingNewId editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
+    public CommentDTONoNews editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
         return this.commentDao.editComment(id, commentUUID, body);
     }
 

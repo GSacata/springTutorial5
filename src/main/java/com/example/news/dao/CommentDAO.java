@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
-import com.example.news.dto.CommentDTOMissingNewId;
+import com.example.news.dto.CommentDTONoNews;
 import com.example.news.interfaces.CommentInterface;
 import com.example.news.utils.Utils;
 
@@ -28,10 +28,10 @@ public class CommentDAO {
         }
     }
 
-    public List<CommentDTOMissingNewId> getAllCommentsRefined(Integer id) {
+    public List<CommentDTONoNews> getAllCommentsRefined(Integer id) {
         News referredNews = this.newsDao.getOneNew(id);
-        CommentDTOMissingNewId DTOComment = new CommentDTOMissingNewId();
-        List<CommentDTOMissingNewId> DTOCommentList = new ArrayList<CommentDTOMissingNewId>();
+        CommentDTONoNews DTOComment = new CommentDTONoNews();
+        List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
         
         if (Objects.nonNull(referredNews)) {
             List<Comment> commentList = new ArrayList<Comment>();
@@ -44,7 +44,7 @@ public class CommentDAO {
                 DTOComment.setPublicationMoment(comment.getPublicationMoment());
                 DTOCommentList.add(DTOComment);
 
-                DTOComment = new CommentDTOMissingNewId();
+                DTOComment = new CommentDTONoNews();
             }
 
             return DTOCommentList;
@@ -64,10 +64,10 @@ public class CommentDAO {
         }
     }
 
-    public CommentDTOMissingNewId getOneCommentRefined(Integer id, UUID commentUUID) {
+    public CommentDTONoNews getOneCommentRefined(Integer id, UUID commentUUID) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment referredComment = new Comment();
-        CommentDTOMissingNewId commentDTOOnlyNewId = new CommentDTOMissingNewId();
+        CommentDTONoNews commentDTOOnlyNewId = new CommentDTONoNews();
         
         if (Objects.nonNull(referredNews)) {
             referredComment = this.commentInterface.findById(commentUUID).get();
@@ -82,10 +82,10 @@ public class CommentDAO {
         }
     }
 
-    public CommentDTOMissingNewId saveNewComment(Integer id, Comment body) {
+    public CommentDTONoNews saveNewComment(Integer id, Comment body) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = new Comment();
-        CommentDTOMissingNewId writtenCommentDTO = new CommentDTOMissingNewId();
+        CommentDTONoNews writtenCommentDTO = new CommentDTONoNews();
 
         if (Objects.nonNull(referredNews)) {
             
@@ -96,17 +96,17 @@ public class CommentDAO {
 
             this.commentInterface.save(writtenComment);
 
-            writtenCommentDTO = new CommentDTOMissingNewId(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
+            writtenCommentDTO = new CommentDTONoNews(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
             return writtenCommentDTO;
         } else {
             return writtenCommentDTO;
         }
     }
 
-    public CommentDTOMissingNewId editComment(Integer id, UUID commentUUID, Comment body) {
+    public CommentDTONoNews editComment(Integer id, UUID commentUUID, Comment body) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = this.commentInterface.findById(commentUUID).get();
-        CommentDTOMissingNewId writtenCommentDTO = new CommentDTOMissingNewId();
+        CommentDTONoNews writtenCommentDTO = new CommentDTONoNews();
 
         if (Objects.nonNull(referredNews) && Objects.nonNull(writtenComment)) {
             
@@ -123,7 +123,7 @@ public class CommentDAO {
 
             this.commentInterface.save(writtenComment);
 
-            writtenCommentDTO = new CommentDTOMissingNewId(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
+            writtenCommentDTO = new CommentDTONoNews(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
             return writtenCommentDTO;
         } else {
             return writtenCommentDTO;

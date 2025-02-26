@@ -7,31 +7,37 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.news.domain.Comment;
 import com.example.news.domain.News;
-import com.example.news.dto.NewsDTORelyOnCommentDTOMissingNewId;
+import com.example.news.dto.CommentDTONoNews;
+import com.example.news.dto.NewsDTONoComments;
 import com.example.news.interfaces.NewsInterface;
 import com.example.news.utils.Utils;
 
 public class NewsDAO {
     
     @Autowired public NewsInterface newsInterface;
+    @Autowired public CommentDAO commentDAO;
 
     public List<News> getAllNews() {
         return this.newsInterface.findAll();
     }
 
-    public List<NewsDTORelyOnCommentDTOMissingNewId> getAllNewsClean() {
+    public List<NewsDTONoComments> getAllNewsClean() {
         List<News> newsListCircularReference = this.newsInterface.findAll();
-        NewsDTORelyOnCommentDTOMissingNewId newsRefined = new NewsDTORelyOnCommentDTOMissingNewId();
-        List<NewsDTORelyOnCommentDTOMissingNewId> newsListRefined = new ArrayList<NewsDTORelyOnCommentDTOMissingNewId>();
+        NewsDTONoComments newsRefined = new NewsDTONoComments();
+        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
 
         for (News news : newsListCircularReference) {
-            newsRefined = new NewsDTORelyOnCommentDTOMissingNewId();
+            newsRefined = new NewsDTONoComments();
+            List<CommentDTONoNews> commentList = commentDAO.getAllCommentsRefined(newsRefined.getId());
 
             newsRefined.setAuthor(news.getAuthor());
             newsRefined.setId(news.getId());
             newsRefined.setContent(news.getContent());
             newsRefined.setHeadline(news.getHeadline());
+            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
+            newsRefined.setPostedComments(commentList);
             newsRefined.setPublicationMoment(news.getPublicationMoment());
 
             newsListRefined.add(newsRefined);
@@ -44,9 +50,9 @@ public class NewsDAO {
         return this.newsInterface.findById(id).get();    
     }
 
-    public NewsDTORelyOnCommentDTOMissingNewId getOneNewClean(Integer id) {
+    public NewsDTONoComments getOneNewClean(Integer id) {
         News newsCircularReference = this.newsInterface.findById(id).get();
-        NewsDTORelyOnCommentDTOMissingNewId newsRefined = new NewsDTORelyOnCommentDTOMissingNewId();
+        NewsDTONoComments newsRefined = new NewsDTONoComments();
         
         newsRefined.setAuthor(newsCircularReference.getAuthor());
         newsRefined.setId(newsCircularReference.getId());
@@ -57,7 +63,7 @@ public class NewsDAO {
         return newsRefined;
     }
 
-    public NewsDTORelyOnCommentDTOMissingNewId saveNews(News body) {
+    public NewsDTONoComments saveNews(News body) {
         News writtenNews = new News();
         writtenNews.setAuthor(body.getAuthor());
         writtenNews.setContent(body.getContent());
@@ -66,12 +72,12 @@ public class NewsDAO {
 
         this.newsInterface.save(writtenNews);
 
-        NewsDTORelyOnCommentDTOMissingNewId writtenNewsDTO = new NewsDTORelyOnCommentDTOMissingNewId(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
+        NewsDTONoComments writtenNewsDTO = new NewsDTONoComments(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
 
         return writtenNewsDTO;
     }
 
-    public NewsDTORelyOnCommentDTOMissingNewId editNews(Integer id, News body) {
+    public NewsDTONoComments editNews(Integer id, News body) {
         News writtenNews = this.getOneNew(id);
 
         if (Objects.nonNull(body.getAuthor())) {
@@ -90,7 +96,7 @@ public class NewsDAO {
 
         this.newsInterface.save(writtenNews);
 
-        NewsDTORelyOnCommentDTOMissingNewId writtenNewsDTO = new NewsDTORelyOnCommentDTOMissingNewId(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
+        NewsDTONoComments writtenNewsDTO = new NewsDTONoComments(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
 
         return writtenNewsDTO;
     }
