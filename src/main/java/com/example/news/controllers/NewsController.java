@@ -38,14 +38,6 @@ public class NewsController {
         return this.newsDao.getAllNewsClean();
     }
 
-    @GetMapping("/homepage")
-    public String getAllNewsHtml(Model model) {
-        List<NewsDTORelyOnCommentDTOMissingNewId> newsList = this.getAllNews();
-        // List<News> newsList = this.newsDao.getAllNews();
-        model.addAttribute("newsList", newsList);        
-        return "newspage.html";
-    }
-
     @GetMapping("/{id}")
     public NewsDTORelyOnCommentDTOMissingNewId GetOneNew(@PathVariable Integer id) {
         return this.newsDao.getOneNewClean(id);
