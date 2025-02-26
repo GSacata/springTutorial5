@@ -57,7 +57,7 @@ public class NewsDAO {
         return newsRefined;
     }
 
-    public News saveNews(News body) {
+    public NewsDTORelyOnCommentDTOMissingNewId saveNews(News body) {
         News writtenNews = new News();
         writtenNews.setAuthor(body.getAuthor());
         writtenNews.setContent(body.getContent());
@@ -65,10 +65,13 @@ public class NewsDAO {
         writtenNews.setPublicationMoment(Utils.returnFormattedNow());
 
         this.newsInterface.save(writtenNews);
-        return writtenNews;
+
+        NewsDTORelyOnCommentDTOMissingNewId writtenNewsDTO = new NewsDTORelyOnCommentDTOMissingNewId(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
+
+        return writtenNewsDTO;
     }
 
-    public News editNews(Integer id, News body) {
+    public NewsDTORelyOnCommentDTOMissingNewId editNews(Integer id, News body) {
         News writtenNews = this.getOneNew(id);
 
         if (Objects.nonNull(body.getAuthor())) {
@@ -86,7 +89,10 @@ public class NewsDAO {
         writtenNews.setPublicationMoment(Utils.returnFormattedNow());
 
         this.newsInterface.save(writtenNews);
-        return writtenNews;
+
+        NewsDTORelyOnCommentDTOMissingNewId writtenNewsDTO = new NewsDTORelyOnCommentDTOMissingNewId(writtenNews.getId(), writtenNews.getHeadline(), writtenNews.getAuthor(), writtenNews.getContent(), null, writtenNews.getPublicationMoment());
+
+        return writtenNewsDTO;
     }
 
     public void deleteNews(Integer id) {

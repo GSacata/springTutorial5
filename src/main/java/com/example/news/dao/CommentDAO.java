@@ -82,9 +82,10 @@ public class CommentDAO {
         }
     }
 
-    public Comment saveNewComment(Integer id, Comment body) {
+    public CommentDTOMissingNewId saveNewComment(Integer id, Comment body) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = new Comment();
+        CommentDTOMissingNewId writtenCommentDTO = new CommentDTOMissingNewId();
 
         if (Objects.nonNull(referredNews)) {
             
@@ -95,15 +96,17 @@ public class CommentDAO {
 
             this.commentInterface.save(writtenComment);
 
-            return writtenComment;
+            writtenCommentDTO = new CommentDTOMissingNewId(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
+            return writtenCommentDTO;
         } else {
-            return writtenComment;
+            return writtenCommentDTO;
         }
     }
 
-    public Comment editComment(Integer id, UUID commentUUID, Comment body) {
+    public CommentDTOMissingNewId editComment(Integer id, UUID commentUUID, Comment body) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment writtenComment = this.commentInterface.findById(commentUUID).get();
+        CommentDTOMissingNewId writtenCommentDTO = new CommentDTOMissingNewId();
 
         if (Objects.nonNull(referredNews) && Objects.nonNull(writtenComment)) {
             
@@ -120,9 +123,10 @@ public class CommentDAO {
 
             this.commentInterface.save(writtenComment);
 
-            return writtenComment;
+            writtenCommentDTO = new CommentDTOMissingNewId(writtenComment.getId(), writtenComment.getAuthor(), writtenComment.getContent(), writtenComment.getPublicationMoment());
+            return writtenCommentDTO;
         } else {
-            return writtenComment;
+            return writtenCommentDTO;
         }
     }
 

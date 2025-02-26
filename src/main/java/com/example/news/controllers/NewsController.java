@@ -44,12 +44,12 @@ public class NewsController {
     }
 
     @PostMapping("write")
-    public News newsPost(@RequestBody News body) {
+    public NewsDTORelyOnCommentDTOMissingNewId newsPost(@RequestBody News body) {
         return this.newsDao.saveNews(body);
     }
 
     @PatchMapping("/{id}/edit")
-    public News EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
+    public NewsDTORelyOnCommentDTOMissingNewId EditNews(@PathVariable Integer id, @RequestBody News body) throws Exception {
         return this.newsDao.editNews(id, body);
     }
 
@@ -71,12 +71,12 @@ public class NewsController {
     }
     
     @PostMapping("/{id}/comments/post-comment")
-    public Comment commentPost(@PathVariable Integer id, @RequestBody Comment body) {
+    public CommentDTOMissingNewId commentPost(@PathVariable Integer id, @RequestBody Comment body) {
         return this.commentDao.saveNewComment(id, body);
     }
 
     @PatchMapping("/{id}/comments/{commentUUID}/edit")
-    public Comment editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
+    public CommentDTOMissingNewId editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
         return this.commentDao.editComment(id, commentUUID, body);
     }
 
