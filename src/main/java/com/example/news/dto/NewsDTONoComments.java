@@ -1,23 +1,19 @@
 package com.example.news.dto;
 
 import java.time.Instant;
-import java.util.List;
 
 public class NewsDTONoComments {
     private Integer id;
     private String headline;
     private String author;
     private String content;
-    private List<CommentDTONoNews> postedComments;
     private Instant publicationMoment;
     
-    public NewsDTONoComments(Integer id, String headline, String author, String content, List<CommentDTONoNews> postedComments,
-            Instant publicationMoment) {
+    public NewsDTONoComments(Integer id, String headline, String author, String content, Instant publicationMoment) {
         this.id = id;
         this.headline = headline;
         this.author = author;
         this.content = content;
-        this.postedComments = postedComments;
         this.publicationMoment = publicationMoment;
     }
 
@@ -53,14 +49,6 @@ public class NewsDTONoComments {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public List<CommentDTONoNews> getPostedComments() {
-        return postedComments;
-    }
-
-    public void setPostedComments(List<CommentDTONoNews> postedComments) {
-        this.postedComments = postedComments;
     }
 
     public Instant getPublicationMoment() {
