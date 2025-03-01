@@ -2,6 +2,8 @@ package com.example.news.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.news.dao.CommentDAO;
@@ -34,8 +37,39 @@ public class NewsController {
     @Autowired private CommentDAO commentDao;
     
     @GetMapping("")
-    public List<NewsDTONoComments> getAllNews() {
-        return this.newsDao.getAllNewsClean();
+    public List<NewsDTONoComments> getAllNews(@RequestParam(required = false) String author, @RequestParam(required = false) String headline) {
+        List<NewsDTONoComments> filteredNewsList = new ArrayList<NewsDTONoComments>();
+        List<NewsDTONoComments> tempNewsList = new ArrayList<NewsDTONoComments>();
+        
+        if (Objects.nonNull(author)) {
+            System.out.println("Verificou que author existe"); // DEV-ERASE
+            tempNewsList = this.newsDao.getAllNewsCleanByAuthor(author);
+            if (!tempNewsList.isEmpty()) {
+                for (NewsDTONoComments news : tempNewsList) {
+                    filteredNewsList.add(news);
+                }
+                tempNewsList.clear();
+            }
+        }
+
+        if (Objects.nonNull(headline)) {
+            System.out.println("Verificou que headline existe"); // DEV-ERASE
+            tempNewsList = this.newsDao.getAllNewsCleanByHeadline(author);
+            // if (Objects.nonNull(tempNewsList)) {
+            if (!tempNewsList.isEmpty()) {
+                for (NewsDTONoComments news : tempNewsList) {
+                    filteredNewsList.add(news);
+                }
+                tempNewsList.clear();
+            }
+        }
+        
+        if (Objects.nonNull(filteredNewsList)) {
+            System.out.println("Tem filtros ativos"); // DEV-ERASE
+            return filteredNewsList;
+        } else {
+            return this.newsDao.getAllNewsClean();
+        }
     }
 
     @GetMapping("/{id}")

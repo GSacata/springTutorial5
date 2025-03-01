@@ -40,6 +40,48 @@ public class NewsDAO {
         return newsListRefined;
     }
 
+    public List<NewsDTONoComments> getAllNewsCleanByAuthor(String author) {
+        List<News> newsListCircularReference = this.newsInterface.findByAuthorContaining(author);
+        NewsDTONoComments newsRefined = new NewsDTONoComments();
+        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
+
+        for (News news : newsListCircularReference) {
+            newsRefined = new NewsDTONoComments();
+
+            newsRefined.setAuthor(news.getAuthor());
+            newsRefined.setId(news.getId());
+            newsRefined.setContent(news.getContent());
+            newsRefined.setHeadline(news.getHeadline());
+            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
+            newsRefined.setPublicationMoment(news.getPublicationMoment());
+
+            newsListRefined.add(newsRefined);
+        }
+
+        return newsListRefined;
+    }
+
+    public List<NewsDTONoComments> getAllNewsCleanByHeadline(String headline) {
+        List<News> newsListCircularReference = this.newsInterface.findByHeadlineContaining(headline);
+        NewsDTONoComments newsRefined = new NewsDTONoComments();
+        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
+
+        for (News news : newsListCircularReference) {
+            newsRefined = new NewsDTONoComments();
+
+            newsRefined.setAuthor(news.getAuthor());
+            newsRefined.setId(news.getId());
+            newsRefined.setContent(news.getContent());
+            newsRefined.setHeadline(news.getHeadline());
+            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
+            newsRefined.setPublicationMoment(news.getPublicationMoment());
+
+            newsListRefined.add(newsRefined);
+        }
+
+        return newsListRefined;
+    }
+
     public News getOneNew(Integer id) {
         return this.newsInterface.findById(id).get();    
     }
