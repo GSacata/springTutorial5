@@ -52,7 +52,6 @@ public class NewsDAO {
             newsRefined.setId(news.getId());
             newsRefined.setContent(news.getContent());
             newsRefined.setHeadline(news.getHeadline());
-            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
             newsRefined.setPublicationMoment(news.getPublicationMoment());
 
             newsListRefined.add(newsRefined);
@@ -73,7 +72,26 @@ public class NewsDAO {
             newsRefined.setId(news.getId());
             newsRefined.setContent(news.getContent());
             newsRefined.setHeadline(news.getHeadline());
-            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
+            newsRefined.setPublicationMoment(news.getPublicationMoment());
+
+            newsListRefined.add(newsRefined);
+        }
+
+        return newsListRefined;
+    }
+
+    public List<NewsDTONoComments> getAllNewsCleanByContent(String content) {
+        List<News> newsListCircularReference = this.newsInterface.findByContentContaining(content);
+        NewsDTONoComments newsRefined = new NewsDTONoComments();
+        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
+
+        for (News news : newsListCircularReference) {
+            newsRefined = new NewsDTONoComments();
+
+            newsRefined.setAuthor(news.getAuthor());
+            newsRefined.setId(news.getId());
+            newsRefined.setContent(news.getContent());
+            newsRefined.setHeadline(news.getHeadline());
             newsRefined.setPublicationMoment(news.getPublicationMoment());
 
             newsListRefined.add(newsRefined);

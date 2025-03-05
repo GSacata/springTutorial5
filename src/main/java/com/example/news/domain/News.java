@@ -1,6 +1,5 @@
 package com.example.news.domain;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
