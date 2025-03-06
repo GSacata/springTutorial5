@@ -33,9 +33,8 @@ public class CommentDAO {
         CommentDTONoNews DTOComment = new CommentDTONoNews();
         List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
         
-        if (Objects.nonNull(referredNews)) {
-            List<Comment> commentList = new ArrayList<Comment>();
-            commentList = referredNews.getPostedComments();
+        List<Comment> commentList = new ArrayList<Comment>();
+            commentList = this.commentInterface.findByOwnedByNewID(referredNews);
 
             for (Comment comment : commentList) {
                 DTOComment.setAuthor(comment.getAuthor());
@@ -44,13 +43,33 @@ public class CommentDAO {
                 DTOComment.setPublicationMoment(comment.getPublicationMoment());
                 DTOCommentList.add(DTOComment);
 
-                DTOComment = new CommentDTONoNews();
+                DTOComment = new CommentDTONoNews(); // Trocar para list.clean().
             }
 
-            return DTOCommentList;
-        } else {
-            return DTOCommentList;
-        }
+        return DTOCommentList;
+        
+        // News referredNews = this.newsDao.getOneNew(id);
+        // CommentDTONoNews DTOComment = new CommentDTONoNews();
+        // List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
+        
+        // if (Objects.nonNull(referredNews)) {
+        //     List<Comment> commentList = new ArrayList<Comment>();
+        //     commentList = referredNews.getPostedComments();
+
+        //     for (Comment comment : commentList) {
+        //         DTOComment.setAuthor(comment.getAuthor());
+        //         DTOComment.setContent(comment.getContent());
+        //         DTOComment.setId(comment.getId());
+        //         DTOComment.setPublicationMoment(comment.getPublicationMoment());
+        //         DTOCommentList.add(DTOComment);
+
+        //         DTOComment = new CommentDTONoNews(); // Trocar para list.clean().
+        //     }
+
+        //     return DTOCommentList;
+        // } else {
+        //     return DTOCommentList;
+        // }
     }
 
     public List<CommentDTONoNews> getAllCommentsCleanByAuthor(Integer id) {

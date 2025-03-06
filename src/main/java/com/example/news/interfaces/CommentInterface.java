@@ -3,11 +3,13 @@ package com.example.news.interfaces;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.annotations.Comments;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.news.domain.Comment;
+import com.example.news.domain.News;
 
 public interface CommentInterface extends JpaRepository<Comment, UUID> {
-    List<Comments> findByAuthorContaining(String author);
+    List<Comment> findByOwnedByNewID(News news);
+    List<Comment> findByAuthorContaining(String author);
+
 }
