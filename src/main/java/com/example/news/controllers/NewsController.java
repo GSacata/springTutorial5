@@ -104,12 +104,12 @@ public class NewsController {
 
     @GetMapping("/{id}/comments")
     public List<CommentDTONoNews> getAllComments(@PathVariable Integer id) {
-        return this.commentDao.getAllCommentsRefined(id);
+        return this.commentDao.getAllCommentsClean(id);
     }
 
     @GetMapping("/{id}/comments/{commentUUID}")
     public CommentDTONoNews getOneComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
-        return this.commentDao.getOneCommentRefined(id, commentUUID);
+        return this.commentDao.getOneCommentClean(id, commentUUID);
     }
     
     @PostMapping("/{id}/comments/post-comment")

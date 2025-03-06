@@ -31,7 +31,7 @@ public class NewsDAO {
             newsRefined.setId(news.getId());
             newsRefined.setContent(news.getContent());
             newsRefined.setHeadline(news.getHeadline());
-            // newsRefined.setPostedComments(commentDAO.getAllCommentsRefined(newsRefined.getId())); // Cria referência circular
+            // newsRefined.setPostedComments(commentDAO.getAllCommentsClean(newsRefined.getId())); // Cria referência circular
             newsRefined.setPublicationMoment(news.getPublicationMoment());
 
             newsListRefined.add(newsRefined);

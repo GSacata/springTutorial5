@@ -28,7 +28,32 @@ public class CommentDAO {
         }
     }
 
-    public List<CommentDTONoNews> getAllCommentsRefined(Integer id) {
+    public List<CommentDTONoNews> getAllCommentsClean(Integer id) {
+        News referredNews = this.newsDao.getOneNew(id);
+        CommentDTONoNews DTOComment = new CommentDTONoNews();
+        List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
+        
+        if (Objects.nonNull(referredNews)) {
+            List<Comment> commentList = new ArrayList<Comment>();
+            commentList = referredNews.getPostedComments();
+
+            for (Comment comment : commentList) {
+                DTOComment.setAuthor(comment.getAuthor());
+                DTOComment.setContent(comment.getContent());
+                DTOComment.setId(comment.getId());
+                DTOComment.setPublicationMoment(comment.getPublicationMoment());
+                DTOCommentList.add(DTOComment);
+
+                DTOComment = new CommentDTONoNews();
+            }
+
+            return DTOCommentList;
+        } else {
+            return DTOCommentList;
+        }
+    }
+
+    public List<CommentDTONoNews> getAllCommentsCleanByAuthor(Integer id) {
         News referredNews = this.newsDao.getOneNew(id);
         CommentDTONoNews DTOComment = new CommentDTONoNews();
         List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
@@ -64,7 +89,7 @@ public class CommentDAO {
         }
     }
 
-    public CommentDTONoNews getOneCommentRefined(Integer id, UUID commentUUID) {
+    public CommentDTONoNews getOneCommentClean(Integer id, UUID commentUUID) {
         News referredNews = this.newsDao.getOneNew(id);
         Comment referredComment = new Comment();
         CommentDTONoNews commentDTOOnlyNewId = new CommentDTONoNews();
