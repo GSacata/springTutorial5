@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.news.domain.Comment;
 import com.example.news.domain.News;
+import com.example.news.dto.CommentDTONewsId;
 import com.example.news.dto.CommentDTONoNews;
 import com.example.news.interfaces.CommentInterface;
 import com.example.news.utils.Utils;
@@ -28,22 +29,23 @@ public class CommentDAO {
         }
     }
 
-    public List<CommentDTONoNews> getAllCommentsClean(Integer id) {
-        News referredNews = this.newsDao.getOneNew(id);
-        CommentDTONoNews DTOComment = new CommentDTONoNews();
-        List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
+    public List<CommentDTONewsId> getAllCommentsClean() {
+        CommentDTONewsId DTOComment = new CommentDTONewsId();
+        List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
         
         List<Comment> commentList = new ArrayList<Comment>();
-            commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+        // commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+        commentList = this.commentInterface.findAll();
 
             for (Comment comment : commentList) {
                 DTOComment.setAuthor(comment.getAuthor());
                 DTOComment.setContent(comment.getContent());
                 DTOComment.setId(comment.getId());
+                DTOComment.setNewsID(comment.getOwnedByNewID().getId());
                 DTOComment.setPublicationMoment(comment.getPublicationMoment());
                 DTOCommentList.add(DTOComment);
 
-                DTOComment = new CommentDTONoNews(); // Trocar para list.clean().
+                DTOComment = new CommentDTONewsId(); // Trocar para list.clean().
             }
 
         return DTOCommentList;
@@ -72,59 +74,132 @@ public class CommentDAO {
         // }
     }
 
-    public List<CommentDTONoNews> getAllCommentsCleanByAuthor(Integer id) {
-        News referredNews = this.newsDao.getOneNew(id);
-        CommentDTONoNews DTOComment = new CommentDTONoNews();
-        List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
+    // public List<CommentDTONoNews> getAllCommentsCleanByAuthor(Integer id) {
+    //     News referredNews = this.newsDao.getOneNew(id);
+    //     CommentDTONoNews DTOComment = new CommentDTONoNews();
+    //     List<CommentDTONoNews> DTOCommentList = new ArrayList<CommentDTONoNews>();
         
-        if (Objects.nonNull(referredNews)) {
-            List<Comment> commentList = new ArrayList<Comment>();
-            commentList = referredNews.getPostedComments();
+    //     if (Objects.nonNull(referredNews)) {
+    //         List<Comment> commentList = new ArrayList<Comment>();
+    //         commentList = referredNews.getPostedComments();
 
+    //         for (Comment comment : commentList) {
+    //             DTOComment.setAuthor(comment.getAuthor());
+    //             DTOComment.setContent(comment.getContent());
+    //             DTOComment.setId(comment.getId());
+    //             DTOComment.setPublicationMoment(comment.getPublicationMoment());
+    //             DTOCommentList.add(DTOComment);
+
+    //             DTOComment = new CommentDTONoNews();
+    //         }
+
+    //         return DTOCommentList;
+    //     } else {
+    //         return DTOCommentList;
+    //     }
+    // }
+
+    public List<CommentDTONewsId> getAllCommentsByNewsClean(Integer id) {
+        News referredNews = this.newsDao.getOneNew(id);
+        CommentDTONewsId DTOComment = new CommentDTONewsId();
+        List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
+
+        List<Comment> commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+
+        if (Objects.nonNull(commentList)) {
             for (Comment comment : commentList) {
                 DTOComment.setAuthor(comment.getAuthor());
                 DTOComment.setContent(comment.getContent());
                 DTOComment.setId(comment.getId());
+                DTOComment.setNewsID(comment.getOwnedByNewID().getId());
                 DTOComment.setPublicationMoment(comment.getPublicationMoment());
+
                 DTOCommentList.add(DTOComment);
-
-                DTOComment = new CommentDTONoNews();
+                DTOComment = new CommentDTONewsId();
             }
-
-            return DTOCommentList;
-        } else {
-            return DTOCommentList;
         }
+
+        return DTOCommentList;
     }
 
-    public Comment getOneComment(Integer id, UUID commentUUID) {
-        News referredNews = this.newsDao.getOneNew(id);
-        Comment referredComment = new Comment();
+    // public Comment getOneComment(Integer id, UUID commentUUID) {
+    //     News referredNews = this.newsDao.getOneNew(id);
+    //     Comment referredComment = new Comment();
         
-        if (Objects.nonNull(referredNews)) {
-            return this.commentInterface.findById(commentUUID).get();
-        } else {
-            return referredComment;
-        }
-    }
+    //     if (Objects.nonNull(referredNews)) {
+    //         return this.commentInterface.findById(commentUUID).get();
+    //     } else {
+    //         return referredComment;
+    //     }
+    // }
 
-    public CommentDTONoNews getOneCommentClean(Integer id, UUID commentUUID) {
-        News referredNews = this.newsDao.getOneNew(id);
-        Comment referredComment = new Comment();
-        CommentDTONoNews commentDTOOnlyNewId = new CommentDTONoNews();
+    public CommentDTONewsId getOneCommentClean(UUID commentUUID) {
+        // News referredNews = this.newsDao.getOneNew(id);
+        // Comment referredComment = new Comment();
         
-        if (Objects.nonNull(referredNews)) {
-            referredComment = this.commentInterface.findById(commentUUID).get();
-            commentDTOOnlyNewId.setAuthor(referredComment.getAuthor());
-            commentDTOOnlyNewId.setContent(referredComment.getContent());
-            commentDTOOnlyNewId.setId(referredComment.getId());
-            commentDTOOnlyNewId.setPublicationMoment(referredComment.getPublicationMoment());
+        // if (Objects.nonNull(referredNews)) {
+        //     return this.commentInterface.findById(commentUUID).get();
+        // } else {
+        //     return referredComment;
+        // }
 
-            return commentDTOOnlyNewId;
+        CommentDTONewsId DTOComment = new CommentDTONewsId();
+        Comment comment = this.commentInterface.findById(commentUUID).get();
+        
+        if (Objects.nonNull(comment)) {
+            DTOComment.setId(commentUUID);
+            DTOComment.setAuthor(comment.getAuthor());
+            DTOComment.setContent(comment.getContent());
+            DTOComment.setNewsID(comment.getOwnedByNewID().getId());
+            DTOComment.setPublicationMoment(comment.getPublicationMoment());
+            
+            return DTOComment;
+        }
+        return DTOComment;
+    }
+    
+    public CommentDTONewsId getOneCommentByNewsClean(Integer id, UUID commentUUID) {
+        CommentDTONewsId DTOComment = new CommentDTONewsId();
+        Comment comment = this.commentInterface.findById(commentUUID).get();
+
+        if (Objects.nonNull(comment) && comment.getOwnedByNewID().getId() == id) {
+            DTOComment.setId(commentUUID);
+            DTOComment.setAuthor(comment.getAuthor());
+            DTOComment.setContent(comment.getContent());
+            DTOComment.setNewsID(comment.getOwnedByNewID().getId());
+            DTOComment.setPublicationMoment(comment.getPublicationMoment());
+            
+            return DTOComment;
         } else {
-            return commentDTOOnlyNewId;
+            System.out.println("Um dos dois parâmetros não é compatível. Retorna vazio.");
+            return DTOComment;
         }
     }
+
+    // public CommentDTONewsId getOneCommentClean(Integer id, UUID commentUUID) {
+    //     CommentDTONewsId DTOComment = new CommentDTONewsId();
+    //     List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
+        
+    //     List<Comment> commentList = new ArrayList<Comment>();
+    //     // commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+    //     commentList = this.commentInterface.findAll();
+
+    //     News referredNews = this.newsDao.getOneNew(id);
+    //     Comment referredComment = new Comment();
+    //     CommentDTONoNews commentDTOOnlyNewId = new CommentDTONoNews();
+        
+    //     if (Objects.nonNull(referredNews)) {
+    //         referredComment = this.commentInterface.findById(commentUUID).get();
+    //         commentDTOOnlyNewId.setAuthor(referredComment.getAuthor());
+    //         commentDTOOnlyNewId.setContent(referredComment.getContent());
+    //         commentDTOOnlyNewId.setId(referredComment.getId());
+    //         commentDTOOnlyNewId.setPublicationMoment(referredComment.getPublicationMoment());
+
+    //         return commentDTOOnlyNewId;
+    //     } else {
+    //         return commentDTOOnlyNewId;
+    //     }
+    // }
 
     public CommentDTONoNews saveNewComment(Integer id, Comment body) {
         News referredNews = this.newsDao.getOneNew(id);
