@@ -2,7 +2,6 @@ package com.example.news.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.news.dao.CommentDAO;
 import com.example.news.domain.Comment;
 import com.example.news.dto.CommentDTONewsId;
-import com.example.news.dto.CommentDTONoNews;
-// import com.example.news.interfaces.NewsInterface;
 
 @RestController
 @RequestMapping("comments")
@@ -28,7 +25,6 @@ public class CommentController {
     List<Comment> tempCommentList = new ArrayList<Comment>();
 
     @Autowired private CommentDAO commentDao;
-    // @Autowired private NewsInterface newsInterface;
 
     @GetMapping("")
     public List<CommentDTONewsId> getAllCommentsClean() {
