@@ -50,18 +50,18 @@ public class CommentController {
         return this.commentDao.getOneCommentByNewsClean(id, commentUUID);
     }
 
-    @PostMapping("/post-comment") // TODO fix, old version
-    public CommentDTONoNews commentPost(@PathVariable Integer id, @RequestBody Comment body) {
+    @PostMapping("/{id}/post-comment")
+    public CommentDTONewsId commentPost(@PathVariable Integer id, @RequestBody Comment body) {
         return this.commentDao.saveNewComment(id, body);
     }
 
-    @PatchMapping("/{id}/comments/{commentUUID}/edit") // TODO fix, old version
-    public CommentDTONoNews editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
+    @PatchMapping("/{id}/single-comment/{commentUUID}/edit")
+    public CommentDTONewsId editComment(@PathVariable Integer id, @PathVariable UUID commentUUID, @RequestBody Comment body) {
         return this.commentDao.editComment(id, commentUUID, body);
     }
 
-    @DeleteMapping("/{id}/comments/{uuid}/delete") // TODO fix, old version
-    public void deleteComment(@PathVariable Integer id, @PathVariable UUID uuid) {
-        this.commentDao.deleteComment(id, uuid);
+    @DeleteMapping("/{id}/single-comment/{commentUUID}/delete")
+    public void deleteComment(@PathVariable Integer id, @PathVariable UUID commentUUID) {
+        this.commentDao.deleteComment(id, commentUUID);
     }
 }
