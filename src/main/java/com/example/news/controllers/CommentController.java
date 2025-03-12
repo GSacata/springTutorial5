@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.news.dao.CommentDAO;
@@ -27,8 +28,11 @@ public class CommentController {
     @Autowired private CommentDAO commentDao;
 
     @GetMapping("")
-    public List<CommentDTONewsId> getAllCommentsClean() {
-        return this.commentDao.getAllCommentsClean();
+    public List<CommentDTONewsId> getAllCommentsClean(
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) String content
+    ) {
+        return this.commentDao.getAllCommentsClean(author, content);
     }
 
     @GetMapping("/single-comment/{commentUUID}")

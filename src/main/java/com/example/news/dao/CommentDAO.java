@@ -28,12 +28,22 @@ public class CommentDAO {
         }
     }
 
-    public List<CommentDTONewsId> getAllCommentsClean() {
+    public List<CommentDTONewsId> getAllCommentsClean(String author, String content) {
         CommentDTONewsId DTOComment = new CommentDTONewsId();
         List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
-        
         List<Comment> commentList = new ArrayList<Comment>();
-        commentList = this.commentInterface.findAll();
+
+        if (Objects.nonNull(author)) {
+            commentList.addAll(this.commentInterface.findByAuthorContaining(author));
+        }
+        
+        if (Objects.nonNull(content)) {
+            commentList.addAll(this.commentInterface.findByContentContaining(content));
+        }
+
+        if (commentList.isEmpty()) {
+            commentList = this.commentInterface.findAll();
+        }
 
             for (Comment comment : commentList) {
                 DTOComment.setAuthor(comment.getAuthor());

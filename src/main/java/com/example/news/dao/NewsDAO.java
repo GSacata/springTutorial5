@@ -19,87 +19,42 @@ public class NewsDAO {
         return this.newsInterface.findAll();
     }
 
-    public List<NewsDTONoComments> getAllNewsClean() {
-        List<News> newsListCircularReference = this.newsInterface.findAll();
-        NewsDTONoComments newsRefined = new NewsDTONoComments();
-        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
+    public List<NewsDTONoComments> getAllNewsClean(String author, String headline, String content) {
+        List<News> newsList = new ArrayList<News>();
+        NewsDTONoComments newsClean = new NewsDTONoComments();
+        List<NewsDTONoComments> newsListClean = new ArrayList<NewsDTONoComments>();
 
-        for (News news : newsListCircularReference) {
-            newsRefined = new NewsDTONoComments();
-
-            newsRefined.setAuthor(news.getAuthor());
-            newsRefined.setId(news.getId());
-            newsRefined.setContent(news.getContent());
-            newsRefined.setHeadline(news.getHeadline());
-            // newsRefined.setPostedComments(commentDAO.getAllCommentsClean(newsRefined.getId())); // Cria referência circular
-            newsRefined.setPublicationMoment(news.getPublicationMoment());
-
-            newsListRefined.add(newsRefined);
+        if (Objects.nonNull(author)) {
+            newsList.addAll(this.newsInterface.findByAuthorContaining(author));
         }
 
-        return newsListRefined;
-    }
-
-    public List<NewsDTONoComments> getAllNewsCleanByAuthor(String author) {
-        List<News> newsListCircularReference = this.newsInterface.findByAuthorContaining(author);
-        NewsDTONoComments newsRefined = new NewsDTONoComments();
-        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
-
-        for (News news : newsListCircularReference) {
-            newsRefined = new NewsDTONoComments();
-
-            newsRefined.setAuthor(news.getAuthor());
-            newsRefined.setId(news.getId());
-            newsRefined.setContent(news.getContent());
-            newsRefined.setHeadline(news.getHeadline());
-            newsRefined.setPublicationMoment(news.getPublicationMoment());
-
-            newsListRefined.add(newsRefined);
+        if (Objects.nonNull(headline)) {
+            newsList.addAll(this.newsInterface.findByHeadlineContaining(headline));
         }
 
-        return newsListRefined;
-    }
-
-    public List<NewsDTONoComments> getAllNewsCleanByHeadline(String headline) {
-        List<News> newsListCircularReference = this.newsInterface.findByHeadlineContaining(headline);
-        NewsDTONoComments newsRefined = new NewsDTONoComments();
-        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
-
-        for (News news : newsListCircularReference) {
-            newsRefined = new NewsDTONoComments();
-
-            newsRefined.setAuthor(news.getAuthor());
-            newsRefined.setId(news.getId());
-            newsRefined.setContent(news.getContent());
-            newsRefined.setHeadline(news.getHeadline());
-            newsRefined.setPublicationMoment(news.getPublicationMoment());
-
-            newsListRefined.add(newsRefined);
+        if (Objects.nonNull(content)) {
+            newsList.addAll(this.newsInterface.findByContentContaining(content));
         }
 
-        return newsListRefined;
-    }
-
-    public List<NewsDTONoComments> getAllNewsCleanByContent(String content) {
-        List<News> newsListCircularReference = this.newsInterface.findByContentContaining(content);
-        NewsDTONoComments newsRefined = new NewsDTONoComments();
-        List<NewsDTONoComments> newsListRefined = new ArrayList<NewsDTONoComments>();
-
-        for (News news : newsListCircularReference) {
-            newsRefined = new NewsDTONoComments();
-
-            newsRefined.setAuthor(news.getAuthor());
-            newsRefined.setId(news.getId());
-            newsRefined.setContent(news.getContent());
-            newsRefined.setHeadline(news.getHeadline());
-            newsRefined.setPublicationMoment(news.getPublicationMoment());
-
-            newsListRefined.add(newsRefined);
+        if (newsList.isEmpty()) {
+            newsList = this.newsInterface.findAll();
         }
 
-        return newsListRefined;
-    }
+        for (News news : newsList) {
+            newsClean = new NewsDTONoComments();
 
+            newsClean.setAuthor(news.getAuthor());
+            newsClean.setId(news.getId());
+            newsClean.setContent(news.getContent());
+            newsClean.setHeadline(news.getHeadline());
+            newsClean.setPublicationMoment(news.getPublicationMoment());
+
+            newsListClean.add(newsClean);
+        }
+
+        return newsListClean;
+    }
+    
     public News getOneNew(Integer id) {
         return this.newsInterface.findById(id).get();    
     }

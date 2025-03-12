@@ -11,5 +11,6 @@ import com.example.news.domain.News;
 public interface CommentInterface extends JpaRepository<Comment, UUID> {
     List<Comment> findByOwnedByNewID(News news);
     List<Comment> findByAuthorContaining(String author);
+    List<Comment> findByContentContaining(String content);
 
 }
