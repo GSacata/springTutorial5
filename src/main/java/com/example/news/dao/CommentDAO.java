@@ -1,5 +1,6 @@
 package com.example.news.dao;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,10 +29,16 @@ public class CommentDAO {
         }
     }
 
-    public List<CommentDTONewsId> getAllCommentsClean(String author, String content) {
+    public List<CommentDTONewsId> getAllCommentsClean(String author, String content, String start, String end) {
         CommentDTONewsId DTOComment = new CommentDTONewsId();
         List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
         List<Comment> commentList = new ArrayList<Comment>();
+
+        if (Objects.nonNull(start) && Objects.nonNull(end)) {
+            Instant startDate = Instant.parse(start + "T00:00:00.00Z");
+            Instant endDate = Instant.parse(end + "T00:00:00.00Z");
+            commentList.addAll(this.commentInterface.findByPublicationMomentBetween(startDate, endDate));
+        }
 
         if (Objects.nonNull(author)) {
             commentList.addAll(this.commentInterface.findByAuthorContaining(author));
@@ -45,38 +52,53 @@ public class CommentDAO {
             commentList = this.commentInterface.findAll();
         }
 
-            for (Comment comment : commentList) {
-                DTOComment.setAuthor(comment.getAuthor());
-                DTOComment.setContent(comment.getContent());
-                DTOComment.setId(comment.getId());
-                DTOComment.setNewsID(comment.getOwnedByNewID().getId());
-                DTOComment.setPublicationMoment(comment.getPublicationMoment());
-                DTOCommentList.add(DTOComment);
+        for (Comment comment : commentList) {
+            DTOComment.setAuthor(comment.getAuthor());
+            DTOComment.setContent(comment.getContent());
+            DTOComment.setId(comment.getId());
+            DTOComment.setNewsID(comment.getOwnedByNewID().getId());
+            DTOComment.setPublicationMoment(comment.getPublicationMoment());
+            DTOCommentList.add(DTOComment);
 
-                DTOComment = new CommentDTONewsId(); // Trocar para list.clean().
-            }
+            DTOComment = new CommentDTONewsId(); // Trocar para list.clean().
+        }
 
         return DTOCommentList;
     }
 
-    public List<CommentDTONewsId> getAllCommentsByNewsClean(Integer id) {
+    public List<CommentDTONewsId> getAllCommentsByNewsClean(Integer id, String author, String content, String start, String end) {
         News referredNews = this.newsDao.getOneNew(id);
         CommentDTONewsId DTOComment = new CommentDTONewsId();
         List<CommentDTONewsId> DTOCommentList = new ArrayList<CommentDTONewsId>();
+        List<Comment> commentList = new ArrayList<Comment>();
 
-        List<Comment> commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+        if (Objects.nonNull(start) && Objects.nonNull(end)) {
+            Instant startDate = Instant.parse(start + "T00:00:00.00Z");
+            Instant endDate = Instant.parse(end + "T00:00:00.00Z");
+            commentList.addAll(this.commentInterface.findByPublicationMomentBetween(startDate, endDate));
+        }
 
-        if (Objects.nonNull(commentList)) {
-            for (Comment comment : commentList) {
-                DTOComment.setAuthor(comment.getAuthor());
-                DTOComment.setContent(comment.getContent());
-                DTOComment.setId(comment.getId());
-                DTOComment.setNewsID(comment.getOwnedByNewID().getId());
-                DTOComment.setPublicationMoment(comment.getPublicationMoment());
+        if (Objects.nonNull(author)) {
+            commentList.addAll(this.commentInterface.findByAuthorContaining(author));
+        }
+        
+        if (Objects.nonNull(content)) {
+            commentList.addAll(this.commentInterface.findByContentContaining(content));
+        }
 
-                DTOCommentList.add(DTOComment);
-                DTOComment = new CommentDTONewsId();
-            }
+        if (commentList.isEmpty()) {
+            commentList = this.commentInterface.findByOwnedByNewID(referredNews);
+        }
+
+        for (Comment comment : commentList) {
+            DTOComment.setAuthor(comment.getAuthor());
+            DTOComment.setContent(comment.getContent());
+            DTOComment.setId(comment.getId());
+            DTOComment.setNewsID(comment.getOwnedByNewID().getId());
+            DTOComment.setPublicationMoment(comment.getPublicationMoment());
+            DTOCommentList.add(DTOComment);
+
+            DTOComment = new CommentDTONewsId(); // Trocar para list.clean().
         }
 
         return DTOCommentList;

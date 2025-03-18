@@ -1,5 +1,6 @@
 package com.example.news.interfaces;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ public interface NewsInterface extends JpaRepository<News, Integer> {
     List<News> findByAuthorContaining(String author);
     List<News> findByHeadlineContaining(String headline);
     List<News> findByContentContaining(String content);
+    List<News> findByPublicationMomentBetween(Instant start, Instant end);
 }

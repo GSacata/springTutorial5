@@ -30,9 +30,11 @@ public class CommentController {
     @GetMapping("")
     public List<CommentDTONewsId> getAllCommentsClean(
         @RequestParam(required = false) String author,
-        @RequestParam(required = false) String content
+        @RequestParam(required = false) String content,
+        @RequestParam(required = false) String start,
+        @RequestParam(required = false) String end
     ) {
-        return this.commentDao.getAllCommentsClean(author, content);
+        return this.commentDao.getAllCommentsClean(author, content, start, end);
     }
 
     @GetMapping("/single-comment/{commentUUID}")
@@ -41,8 +43,13 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public List<CommentDTONewsId> getAllCommentsByNews(@PathVariable Integer id) {
-        return this.commentDao.getAllCommentsByNewsClean(id);
+    public List<CommentDTONewsId> getAllCommentsByNews(@PathVariable Integer id,
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) String content,
+        @RequestParam(required = false) String start,
+        @RequestParam(required = false) String end
+    ) {
+        return this.commentDao.getAllCommentsByNewsClean(id, author, content, start, end);
     }
 
     @GetMapping("/{id}/single-comment/{commentUUID}")

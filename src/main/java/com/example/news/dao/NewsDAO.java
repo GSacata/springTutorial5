@@ -1,5 +1,6 @@
 package com.example.news.dao;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,10 +20,16 @@ public class NewsDAO {
         return this.newsInterface.findAll();
     }
 
-    public List<NewsDTONoComments> getAllNewsClean(String author, String headline, String content) {
+    public List<NewsDTONoComments> getAllNewsClean(String author, String headline, String content, String start, String end) {
         List<News> newsList = new ArrayList<News>();
         NewsDTONoComments newsClean = new NewsDTONoComments();
         List<NewsDTONoComments> newsListClean = new ArrayList<NewsDTONoComments>();
+
+        if (Objects.nonNull(start) && Objects.nonNull(end)) {
+            Instant startDate = Instant.parse(start + "T00:00:00.00Z");
+            Instant endDate = Instant.parse(end + "T00:00:00.00Z");
+            newsList.addAll(this.newsInterface.findByPublicationMomentBetween(startDate, endDate));
+        }
 
         if (Objects.nonNull(author)) {
             newsList.addAll(this.newsInterface.findByAuthorContaining(author));

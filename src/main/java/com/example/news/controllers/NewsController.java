@@ -32,9 +32,11 @@ public class NewsController {
     public List<NewsDTONoComments> getAllNews(
         @RequestParam(required = false) String author,
         @RequestParam(required = false) String headline,
-        @RequestParam(required = false) String content
+        @RequestParam(required = false) String content,
+        @RequestParam(required = false) String start,
+        @RequestParam(required = false) String end
     ) {
-        return this.newsDao.getAllNewsClean(author, headline, content);
+        return this.newsDao.getAllNewsClean(author, headline, content, start, end);
     }
 
     @GetMapping("/{id}")
