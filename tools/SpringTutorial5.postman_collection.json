@@ -1,0 +1,471 @@
+{
+	"info": {
+		"_postman_id": "0a633029-2db1-4ef2-8087-5f2c3891ac2c",
+		"name": "SpringTutorial5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20680220"
+	},
+	"item": [
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "Get all news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news"
+							],
+							"query": [
+								{
+									"key": "author",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "headline",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "start",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								},
+								{
+									"key": "end",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One New",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "News Write",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"headline\": \"Chamada\",\n    \"author\": \"Autor da notícia\",\n    \"content\": \"Conteúdo da notícia.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/news/write",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"write"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit New",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Correção do conteúdo.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/news/:id/edit",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								":id",
+								"edit"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete News",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news/:id/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								":id",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "All Comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "author",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "start",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								},
+								{
+									"key": "end",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Comments by New",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/comments/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								":id"
+							],
+							"query": [
+								{
+									"key": "author",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "start",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								},
+								{
+									"key": "end",
+									"value": "",
+									"description": "yyyy-MM-dd",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "One Comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/comments/single-comment/:commentUUID",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								"single-comment",
+								":commentUUID"
+							],
+							"variable": [
+								{
+									"key": "commentUUID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "One comment by New",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/comments/:id/single-comment/:commentUUID",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								":id",
+								"single-comment",
+								":commentUUID"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								},
+								{
+									"key": "commentUUID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comment on news",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"Autor\",\n    \"content\": \"Conteúdo do comentário.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments/:id/post-comment",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								":id",
+								"post-comment"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit comment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Novo conteúdo.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments/:id/single-comment/:commentUUID/edit",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								":id",
+								"single-comment",
+								":commentUUID",
+								"edit"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								},
+								{
+									"key": "commentUUID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/comments/:id/single-comment/:commentUUID/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"comments",
+								":id",
+								"single-comment",
+								":commentUUID",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "int"
+								},
+								{
+									"key": "commentUUID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:0000",
+			"type": "string"
+		}
+	]
+}
